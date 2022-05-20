@@ -5,10 +5,14 @@ const urlValidar = (req, res, next) => {
         const { origin } = req.body
         const urlFrontend = new URL(origin);
         if (urlFrontend.origin !== 'null') {
-            return next();
-        } else {
-            throw new Error('Url no valido');
-        }
+            if (
+                urlFrontend.protocol == 'http:' || 
+                urlFrontend.protocol == 'https'
+            ){
+                return next();
+            }
+        }  
+        throw new Error('Url no valido');
     } catch (error) {
         return res.send("url no valida");
     }
