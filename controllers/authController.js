@@ -1,11 +1,15 @@
 const User = require("../models/User");
 const { nanoid } = require('nanoid');
+const {validationResult} = require('express-validator');
 
 const registerForm = (req, res) => {
     res.render('register');
 }
 
 const registerUser = async (req, res) => {
+    const erorrs = validationResult(req);
+    if (!erorrs.isEmpty()) return res.json(erorrs);
+
     console.log(req.body);
     const { userName, email, password } = req.body;
     try {
