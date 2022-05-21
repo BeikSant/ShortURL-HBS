@@ -1,15 +1,16 @@
 const User = require("../models/User");
 const { nanoid } = require('nanoid');
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
 
 const registerForm = (req, res) => {
     res.render('register');
 }
 
 const registerUser = async (req, res) => {
-    const erorrs = validationResult(req);
-    if (!erorrs.isEmpty()) return res.json(erorrs);
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json(errors.array());
+    }
     console.log(req.body);
     const { userName, email, password } = req.body;
     try {
@@ -31,7 +32,7 @@ const registerUser = async (req, res) => {
 const confirmar = async (req, res) => {
     const { token } = req.params;
     try {
-        const user = await User.findOne({tokenConfirm: token})
+        const user = await User.findOne({ tokenConfirm: token })
         if (!user) throw new Error('No existe este usuario')
         user.confirmAccount = true;
         user.tokenConfirm = null;
@@ -43,19 +44,25 @@ const confirmar = async (req, res) => {
 }
 
 const loginForm = (req, res) => {
-    res.render('login');
+    res.render('login', { mensajes: req.flash("mensajes") });
 }
 
 const loginUser = async (req, res) => {
-    const {email, password} = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('mensajes', errors.array());
+        return res.redirect('/auth/login');
+    }
+    const { email, password } = req.body;
     try {
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({ email: email });
         if (!user) throw new Error('No registrado');
         if (!user.confirmAccount) throw new Error('Falta confirmar la cuenta');
         if (!(await user.comparePassword(password))) throw new Error('Contraseña incorrecta')
-        res.redirect('/');
+        return res.redirect('/');
     } catch (error) {
-        res.send(error.message);
+        req.flash('mensajes', [{msg: error.message}]);
+        return res.redirect('/auth/login');
     }
 }
 module.exports = {
