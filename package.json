@@ -22,6 +22,7 @@
     "express-session": "^1.17.3",
     "express-validator": "^6.14.0",
     "moongose": "^1.0.0",
-    "nanoid": "^3.3.4"
+    "nanoid": "^3.3.4",
+    "passport": "^0.6.0"
   }
 }

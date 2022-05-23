@@ -1,7 +1,10 @@
 const express = require('express');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+
 const { create } = require('express-handlebars');
+const User = require('./models/User');
 require('dotenv').config();
 require('./database/db')
 
@@ -15,6 +18,18 @@ app.use(session({
 }));
 
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) =>
+    done(null, { id: user._id, userName: user.userName }
+    ));
+
+passport.deserializeUser(async (user, done) => {
+    const userDB = await User.findById(user.id);
+    return done(null, { id: userDB._id, userName: userDB.userName });
+});
 
 const hbs = create({
     extname: '.hbs',
