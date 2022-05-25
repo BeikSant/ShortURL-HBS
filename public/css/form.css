@@ -1,0 +1,102 @@
+* { box-sizing: border-box;}
+
+html, body{
+  height: 100%;
+}
+
+body{
+  background-color: #151E33;
+  color: white;
+  font-family: Helvetica;
+  
+  align-items:center;
+  line-height: 24px;
+}
+
+/** Create **/
+main{
+  margin: 0 auto;
+  font-size: 12px;
+  width: 100%;
+  max-width:785px;
+  min-width:320px;
+  background-color: #1b263e;
+  border-radius: 15px;
+  padding: 0.1rem 3rem 1.5rem 3rem;
+}
+
+a{
+  color: #f089a0;
+  text-decoration: none;
+}
+
+/** login **/
+.login{
+  margin-top: 2rem;
+  display: block;
+  text-align: right;
+  font-size: 1em;
+}
+/** Content **/
+.content{
+  width: 70%;
+  margin: 4rem auto;
+  margin-bottom: 2rem;
+}
+.content h1{
+  text-align:center;
+  font-size: 2em;
+}
+
+.content p{
+  text-align:center;
+  width: 90%;
+  margin: 0 auto;
+  color: #8f9ab2;
+}
+
+/** Form **/
+.form{
+  width: 90%;
+  margin: 2rem auto;
+}
+
+.form label{
+  font-weight: bold;
+  display: block;
+}
+
+.form input{
+  display: block;
+  border: none;
+  width:100%;
+  margin-bottom: 0.8rem;
+  padding: 1rem;
+  color: white;
+  border-radius: 0.2rem;
+}
+
+.form input:not([type="submit"]){
+  background-color: transparent;
+  border: 1px solid #495e8d;
+  margin-top: 0.3rem;
+}
+
+.form input[type="submit"]{
+  background-color: #e3627f;
+  font-weight: bold;
+  margin-top: 1.4rem;
+  cursor: pointer;
+}
+
+/* Legal */
+
+.legal{
+  background-color: #202e4e;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 0.8rem;
+  padding: 1rem 3rem;
+  border-radius: 0.4rem;
+  color: #8f9ab2;
+}
