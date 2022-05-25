@@ -8,14 +8,13 @@ body{
   background-color: #151E33;
   color: white;
   font-family: Helvetica;
-  
   align-items:center;
   line-height: 24px;
 }
 
 /** Create **/
 main{
-  margin: 0 auto;
+  margin: 3rem auto;
   font-size: 12px;
   width: 100%;
   max-width:785px;
