@@ -6,10 +6,10 @@ const verificarUser = require('../middleware/verificarUser');
 const router = express.Router();
 
 router.get('/', verificarUser, leerUrls);
-router.post('/', urlValidar, agregarUrl);
-router.get('/eliminar/:id', eliminarUrl);
-router.get('/editar/:id', editarUrlForm);
-router.post('/editar/:id', urlValidar, editarUrl);
+router.post('/', verificarUser, urlValidar, agregarUrl);
+router.get('/eliminar/:id', verificarUser, eliminarUrl);
+router.get('/editar/:id', verificarUser, editarUrlForm);
+router.post('/editar/:id', verificarUser, urlValidar, editarUrl);
 router.get('/:shortURL', redireccionamiento);
 
 module.exports = router;

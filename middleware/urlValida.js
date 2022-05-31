@@ -6,15 +6,21 @@ const urlValidar = (req, res, next) => {
         const urlFrontend = new URL(origin);
         if (urlFrontend.origin !== 'null') {
             if (
-                urlFrontend.protocol == 'http:' || 
-                urlFrontend.protocol == 'https'
-            ){
+                urlFrontend.protocol == 'http:' ||
+                urlFrontend.protocol == 'https:'
+            ) {
                 return next();
             }
-        }  
-        throw new Error('Url no valido');
+            throw new Error('Debe contener el formato https://');
+        }
+        throw new Error('URL no válida');
     } catch (error) {
-        return res.send("url no valida");
+        if (error.message === "Invalid URL") {
+            req.flash('mensajes', [{ msg: 'URL no válida' }]);
+        } else {
+            req.flash('mensajes', [{ msg: error.message }]);
+        }
+        return res.redirect("/");
     }
 }
 

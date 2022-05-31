@@ -3,7 +3,11 @@ const { nanoid } = require('nanoid');
 const { validationResult } = require('express-validator');
 
 const registerForm = (req, res) => {
-    res.render('register', { mensajes: req.flash("mensajes") });
+    res.render('register');
+}
+
+const loginForm = (req, res) => {
+    res.render('login');
 }
 
 const registerUser = async (req, res) => {
@@ -49,10 +53,6 @@ const confirmar = async (req, res) => {
         req.flash('mensajes', [{ msg: error.message }]);
         res.redirect('/auth/login');
     }
-}
-
-const loginForm = (req, res) => {
-    res.render('login', { mensajes: req.flash("mensajes") });
 }
 
 const loginUser = async (req, res) => {

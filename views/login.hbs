@@ -1,4 +1,5 @@
-<link rel="stylesheet" type="text/css" href="/css/form.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
+</link>
 
 <main class="create">
     <p class="login">Aun no tienes una cuenta? <a href="/auth/register">Registrate</a></p>
@@ -8,10 +9,11 @@
         <p>Por favor ingrese todos los datos correctamente
         </p>
         <form action="/auth/login" method="post" class="form">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             <label for="email">Correo electrónico</label>
             <input id="email" type="text" name="email" placeholder="Ingresa tu correo electrónico">
             <label for="password">Contraseña</label>
-            <input id="password" type="password" name="password"  placeholder="Ingresa tu contraseña">
+            <input id="password" type="password" name="password" placeholder="Ingresa tu contraseña">
             <input type="submit" value="Iniciar Sesión">
         </form>
     </article>
