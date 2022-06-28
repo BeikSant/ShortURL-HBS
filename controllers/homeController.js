@@ -18,6 +18,7 @@ const agregarUrl = async (req, res) => {
             throw new Error("Ya tiene registrada esa URL")
         }
         const url = new Url({ origin: origin, shortURL: nanoid(8), user: req.user.id });
+        console.log(req.user.type);
         await url.save();
         res.redirect('/');
     } catch (error) {
@@ -86,7 +87,7 @@ const redireccionamiento = async (req, res) => {
         res.redirect(urlBD.origin);
     } catch (error) {
         req.flash('mensajes', [{ msg: "URL no configurada" }]);
-        return res.redirect('auth/login');
+        return res.redirect('/');
     }
 }
 

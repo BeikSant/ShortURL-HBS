@@ -1,0 +1,18 @@
+<h1>Administrar Usuarios</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">UserName</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Cuenta Confirmada</th>
+      <th scope="col">Rol</th>
+      <th scope="col">Opcion</th>
+    </tr>
+{{#each users }}
+    <tbody>
+    {{> Table user=this}}
+    </tbody>
+{{/each}}
+</table>
+

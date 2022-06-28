@@ -23,14 +23,15 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user, done) =>
-    done(null, { id: user._id, userName: user.userName }
-    ));
+passport.serializeUser((user, done) => {
+    done(null, { id: user._id, userName: user.userName, isAdmin: user.type === 'admin' ? true : false });
+});
 
 passport.deserializeUser(async (user, done) => {
     const userDB = await User.findById(user.id);
-    return done(null, { id: userDB._id, userName: userDB.userName });
+    return done(null, { id: userDB._id, userName: userDB.userName , isAdmin: userDB.type === 'admin' ? true : false});
 });
+
 
 const hbs = create({
     extname: '.hbs',
@@ -49,11 +50,13 @@ app.use(csrf());
 app.use((req, res, next) => { 
     res.locals.csrfToken = req.csrfToken(); //Sirve para evitar ataques de tipo CSRF
     res.locals.mensajes = req.flash("mensajes");
+    res.locals.user = req.user || null;
     next();
 });
 
 app.use('/', require('./routes/home'));
 app.use('/auth', require('./routes/auth'));
+app.use('/admin', require('./routes/admin'));
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log('Servidor corriendo ', PORT));
