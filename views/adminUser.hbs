@@ -1,13 +1,17 @@
 <h1>Administrar Usuarios</h1>
 
-<table class="table">
+ <form class="form-inline" method="get" action="/admin/users">
+    <input class="form-control mr-sm-2" type="search" value="{{Search}}" placeholder="Busqueda por Username" name="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
+
+<table class="table" style="text-align: center">
   <thead>
     <tr>
       <th scope="col">UserName</th>
       <th scope="col">Correo</th>
-      <th scope="col">Cuenta Confirmada</th>
       <th scope="col">Rol</th>
-      <th scope="col">Opcion</th>
+      <th scope="col">Estado</th>
     </tr>
 {{#each users }}
     <tbody>

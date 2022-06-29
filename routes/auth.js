@@ -1,9 +1,10 @@
 const express = require('express');
 const { body } = require('express-validator')
 const { loginForm, registerForm, registerUser, confirmar, loginUser, logout } = require('../controllers/authController');
+const { verificarSessionLogin, verificarSessionReg } = require('../middleware/verificarUserSession');
 const router = express.Router();
 
-router.get('/register', registerForm);
+router.get('/register', verificarSessionReg,registerForm);
 router.post('/register',
     [
         body('userName', 'Ingrese un nombre valido').trim().notEmpty().escape(),
@@ -18,7 +19,7 @@ router.post('/register',
             }),
     ], registerUser)
 router.get('/confirmar/:token', confirmar);
-router.get('/login', loginForm);
+router.get('/login', verificarSessionLogin, loginForm);
 router.post('/login', 
     [
         body('email', 'Ingrese un email valido').trim().isEmail().normalizeEmail(),

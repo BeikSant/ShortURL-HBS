@@ -30,6 +30,10 @@ const userSchema = new Schema({
     confirmAccount: {
         type: Boolean,
         default: false
+    },
+    blockedAccount: {
+        type: Boolean,
+        default: false
     }
 });
 

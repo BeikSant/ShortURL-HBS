@@ -18,7 +18,6 @@ const agregarUrl = async (req, res) => {
             throw new Error("Ya tiene registrada esa URL")
         }
         const url = new Url({ origin: origin, shortURL: nanoid(8), user: req.user.id });
-        console.log(req.user.type);
         await url.save();
         res.redirect('/');
     } catch (error) {
@@ -80,7 +79,6 @@ const editarUrl = async (req, res) => {
 }
 
 const redireccionamiento = async (req, res) => {
-    console.log("hola");
     const { shortURL } = req.params;
     try {
         const urlBD = await Url.findOne({ shortURL: shortURL });

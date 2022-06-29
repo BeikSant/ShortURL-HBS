@@ -24,18 +24,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
-    done(null, { id: user._id, userName: user.userName, isAdmin: user.type === 'admin' ? true : false });
+    done(null, { id: user._id, userName: user.userName, isAdmin: user.type === 'admin' ? true : false, blocked: user.blockedAccount});
 });
 
 passport.deserializeUser(async (user, done) => {
     const userDB = await User.findById(user.id);
-    return done(null, { id: userDB._id, userName: userDB.userName , isAdmin: userDB.type === 'admin' ? true : false});
+    return done(null, { id: userDB._id, userName: userDB.userName , isAdmin: userDB.type === 'admin' ? true : false,  blocked: userDB.blockedAccount});
 });
 
 
 const hbs = create({
     extname: '.hbs',
-    partialsDir: 'views/components'
+    partialsDir: 'views/components',
+
+    helpers: {
+        ifCond: function(v1, v2, options) {
+            if(v1 === v2) {
+            return options.fn(this);
+            }
+            return options.inverse(this);
+        }
+    }
 });
 
 app.engine('.hbs', hbs.engine);

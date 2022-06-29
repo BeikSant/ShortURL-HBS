@@ -16,7 +16,6 @@ const registerUser = async (req, res) => {
         req.flash('mensajes', errors.array());
         return res.redirect('/auth/register');
     }
-    console.log(req.body);
     const { userName, email, password } = req.body;
     try {
         const duplicaUserName = await User.findOne({ userName: userName });

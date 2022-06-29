@@ -1,7 +1,41 @@
 <tr>
     <th scope="row">{{user.userName}}</th>
     <td>{{user.email}}</td>
-    <td>{{user.confirmAccount}}</td>
-    <td>{{user.type}}</td>
-    <td>opciones</td>
+
+    
+    {{#ifCond user.type "admin"}}
+        <td style="background-color: #bcf5ff">
+            <div class="form-check">
+                <input type="checkbox" onclick='window.location.assign("/admin/ungraderol/{{user.email}}")' class="form-check-input" checked>Admin
+            </div>
+        </td>
+    {{else}} 
+        <td style="background-color: #f7ffbc">
+            <div class="form-check">
+                <input type="checkbox" onclick='window.location.assign("/admin/upgraderol/{{user.email}}")' class="form-check-input">User
+            </div>
+        </td>
+    {{/ifCond}}
+
+    {{#if user.blockedAccount}}
+        <td style="background-color: #FFBCBC">
+            <div class="form-check">
+                <input type="checkbox" onclick='window.location.assign("/admin/unblockuser/{{user.email}}")' class="form-check-input">Bloqueado
+            </div>
+        </td>
+
+    {{else}}
+        {{#if user.confirmAccount}}
+            <td style="background-color: #BDFFBC">
+            <div class="form-check">
+                <input type="checkbox" onclick='window.location.assign("/admin/blockuser/{{user.email}}")' class="form-check-input"checked>Activo
+            
+        {{else}}
+            <td style="background-color: #FFE1BC">
+                <div class="form-check">
+                 <input type="checkbox" onclick='window.location.assign("/admin/blockuser/{{user.email}}")' class="form-check-input"checked>Por Confirmar
+        {{/if}}
+            </div> 
+        </td>
+    {{/if}}
 </tr>
