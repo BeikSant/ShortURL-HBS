@@ -1,12 +1,20 @@
 const verificarUser = (req, res, next) => {
     if (req.isAuthenticated()) {
-            if (req.user.blocked){
-                req.flash('mensajes', [{ msg: "Tu cuenta ha sido bloqueada" }]);
-                return res.redirect('/auth/login');
-            }
+        if (req.user.blocked) {
+            return res.redirect('/auth/blocked');
+        }
         return next();
-    } else 
+    }
     res.redirect('/auth/login');
+}
+
+const verificarSession = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        if (req.user.blocked) {
+            return next();
+        }
+    }
+    res.redirect('/');
 }
 
 const isAdmin = (req, res, next) => {
@@ -22,6 +30,7 @@ const verificarSessionReg = (req, res, next) => {
         req.logout(req.user, err => {
             if (err) return next(err);
         });
+        return res.redirect('/auth/register');
     }
     return next();
 }
@@ -37,5 +46,6 @@ module.exports = {
     verificarUser,
     isAdmin,
     verificarSessionReg,
-    verificarSessionLogin
+    verificarSessionLogin,
+    verificarSession,
 }

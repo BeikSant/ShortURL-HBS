@@ -85,6 +85,10 @@ const logout = (req, res) => {
     });
 }
 
+const userBlocked = (req, res) => {
+    res.render('Blocked');
+}
+
 module.exports = {
     loginForm,
     registerForm,
@@ -92,4 +96,5 @@ module.exports = {
     confirmar,
     loginUser,
     logout,
+    userBlocked,
 }
