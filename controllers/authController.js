@@ -103,6 +103,7 @@ const logout = (req, res) => {
     });
 }
 
+<<<<<<< HEAD
 const forgoutPassword = async (req, res) => {
     const email = req.body.email;
     console.log(req.body)
@@ -183,6 +184,10 @@ const changePassword = async (req, res) => {
         req.flash('mensajes', [{ msg: error.message }]);
         res.redirect('/auth/changePassword');
     }
+=======
+const userBlocked = (req, res) => {
+    res.render('Blocked');
+>>>>>>> fea7ee26b3a02f52a4ed6493e3cd0458737c9c6b
 }
 
 module.exports = {
@@ -192,10 +197,14 @@ module.exports = {
     confirmar,
     loginUser,
     logout,
+<<<<<<< HEAD
     formForgout,
     forgoutPassword,
     formForgoutChangePassword,
     forgoutChangePassword,
     formChangePassword,
     changePassword
+=======
+    userBlocked,
+>>>>>>> fea7ee26b3a02f52a4ed6493e3cd0458737c9c6b
 }

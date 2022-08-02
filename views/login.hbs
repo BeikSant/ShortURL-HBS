@@ -1,6 +1,10 @@
 <link rel="stylesheet" type="text/css" href="/css/form.css">
 </link>
 
+{{#if body.userBlocked}}
+    <div class="alert alert-dark alert-dismissible fade show mb-2">Usuario Bloqueado</div>
+{{/if}}
+
 <main class="create">
     <p class="login">Aun no tienes una cuenta? <a href="/auth/register">Registrate</a></p>
 

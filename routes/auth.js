@@ -1,7 +1,12 @@
 const express = require('express');
 const { body } = require('express-validator')
+<<<<<<< HEAD
 const { loginForm, registerForm, registerUser, confirmar, loginUser, logout, formForgout, forgoutPassword, formchangePassword, changePassword, formForgoutChangePassword, forgoutChangePassword, formChangePassword } = require('../controllers/authController');
 const { verificarSessionLogin, verificarSessionReg, verificarUser } = require('../middleware/verificarUserSession');
+=======
+const {userBlocked, loginForm, registerForm, registerUser, confirmar, loginUser, logout } = require('../controllers/authController');
+const { verificarSessionLogin, verificarSessionReg, verificarUser, verificarSession } = require('../middleware/verificarUserSession');
+>>>>>>> fea7ee26b3a02f52a4ed6493e3cd0458737c9c6b
 const router = express.Router();
 
 router.get('/register', verificarSessionReg, registerForm);
@@ -26,6 +31,7 @@ router.post('/login',
         body('password', 'Ingrese de minimo 6 caracteres').trim().isLength({ min: 6 }).escape(),
     ], loginUser);
 router.get('/logout', logout);
+<<<<<<< HEAD
 router.get('/forgout', formForgout);
 router.post('/forgout', forgoutPassword);
 router.get('/forgout/:token', formForgoutChangePassword);
@@ -56,5 +62,8 @@ router.post("/changePassword", verificarUser,
             }),
     ]
     , changePassword);
+=======
+router.get('/blocked', verificarSession, userBlocked);
+>>>>>>> fea7ee26b3a02f52a4ed6493e3cd0458737c9c6b
 
 module.exports = router;
