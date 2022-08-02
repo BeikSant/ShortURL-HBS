@@ -1,0 +1,27 @@
+<form 
+method="post" action=
+{{#unless forgout}}
+"/auth/changePassword"
+{{else}}
+"/auth/forgout/{{token}}"
+{{/unless}}
+>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    {{#unless forgout}}
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña Actual</label>
+        <input type="password" id="password" class="form-control" name="password">
+    </div>
+    {{/unless}}
+    <div class="mb-3">
+        <label for="newpassword" class="form-label">Contraseña Nueva</label>
+        <input type="password" id="newpassword" class="form-control" name="newpassword">
+    </div>
+
+    <div class="mb-3">
+        <label for="renewpassword" class="form-label">Repita Contraseña Nueva</label>
+        <input type="password" id="renewpassword" class="form-control" name="renewpassword">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

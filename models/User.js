@@ -19,7 +19,7 @@ const userSchema = new Schema({
         type: 'String',
         required: true,
     },
-    type : {
+    type: {
         type: 'String',
         default: 'user'
     },
@@ -32,6 +32,10 @@ const userSchema = new Schema({
         default: false
     },
     blockedAccount: {
+        type: Boolean,
+        default: false
+    },
+    PassoworTemplates: {
         type: Boolean,
         default: false
     }

@@ -1,6 +1,9 @@
 const User = require("../models/User");
 const { nanoid } = require('nanoid');
 const { validationResult } = require('express-validator');
+const { mailOptions, transporter } = require("../utils/mail");
+const Forgout = require("../models/Forgout");
+
 
 const registerForm = (req, res) => {
     res.render('register');
@@ -8,6 +11,14 @@ const registerForm = (req, res) => {
 
 const loginForm = (req, res) => {
     res.render('login');
+}
+
+const formForgout = (req, res) => {
+    res.render("forgout");
+}
+
+const formChangePassword = (req, res) => {
+    res.render("changePass");
 }
 
 const registerUser = async (req, res) => {
@@ -25,7 +36,14 @@ const registerUser = async (req, res) => {
         } else if (duplicateEmail) {
             throw new Error('Correo ya registrado');
         }
-        const user = new User({ userName, email, password, tokenConfirm: nanoid() });
+        const tokenConfirm = nanoid();
+        const user = new User({ userName, email, password, tokenConfirm });
+        transporter.sendMail(mailOptions(email, tokenConfirm), (error, info) => {
+            if (error) {
+                console.log(error);
+                throw new Error('No se logro enviar el correo');
+            }
+        });
         await user.save();
 
         req.flash('mensajes', [{ msg: "Revisa tu correo electrónico y valida tu cuenta" }]);
@@ -85,6 +103,88 @@ const logout = (req, res) => {
     });
 }
 
+const forgoutPassword = async (req, res) => {
+    const email = req.body.email;
+    console.log(req.body)
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user) throw new Error('Usuario no registrado');
+        if (!user.confirmAccount) throw new Error('Falta confirmar la cuenta');
+
+        const token = nanoid();
+        const forgout = new Forgout({ token: token, user: user.id });
+        await forgout.save();
+
+        req.flash('mensajes', [{ msg: "Revisa tu correo electrónico" }]);
+        res.redirect('/auth/login');
+        //permite crear la sesion de usuario a traves de passport
+    } catch (error) {
+        req.flash('mensajes', [{ msg: error.message }]);
+        return res.redirect('/auth/login');
+    }
+}
+
+const formForgoutChangePassword = async (req, res) => {
+    const { token } = req.params;
+    try {
+        const forgout = await Forgout.findOne({ token: token })
+        if (!forgout) throw new Error('Solicitud no valida');
+        if (!forgout.state) throw new Error('Solicitud no valida');
+        return res.render('changePass',  { forgout: true, token: token });
+    } catch (error) {
+        req.flash('mensajes', [{ msg: error.message }]);
+        res.redirect('/auth/login');
+    }
+
+}
+
+const forgoutChangePassword = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('mensajes', errors.array());
+        return res.redirect('/auth/login');
+    }
+    const {token} = req.params;
+    const newpassword = req.body.newpassword;
+    try {
+        const forgout = await Forgout.findOne({ token: token })
+        if (!forgout) throw new Error('Solicitud no valida');
+
+        const user = await User.findById(forgout.user);
+        user.password = newpassword;
+        console.log(user);
+        await forgout.updateOne({state:false});
+        await user.save();
+        req.flash('mensajes', [{ msg: "Contraseña cambiada correctamente" }]);
+        res.redirect('/auth/login');
+    } catch (error) {
+        req.flash('mensajes', [{ msg: error.message }]);
+        res.redirect('/auth/login');
+    }
+}
+
+const changePassword = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('mensajes', errors.array());
+        return res.redirect('/auth/changePassword');
+    }
+    const password = req.body.password;
+    const newpassword = req.body.newpassword;
+    try {
+        const user = await User.findById(req.user.id);
+        if (!(await user.comparePassword(password))) throw new Error('Contraseña incorrecta');
+        if (password === newpassword) throw new Error('Escriba una contaseña diferente');
+        user.password = newpassword;
+        await user.save();
+        req.flash('mensajes', [{ msg: "Contraseña cambiada correctamente" }]);
+        res.redirect('/');
+    } catch (error) {
+        req.flash('mensajes', [{ msg: error.message }]);
+        res.redirect('/auth/changePassword');
+    }
+}
+
 module.exports = {
     loginForm,
     registerForm,
@@ -92,4 +192,10 @@ module.exports = {
     confirmar,
     loginUser,
     logout,
+    formForgout,
+    forgoutPassword,
+    formForgoutChangePassword,
+    forgoutChangePassword,
+    formChangePassword,
+    changePassword
 }
