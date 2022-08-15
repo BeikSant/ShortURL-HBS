@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator')
-const { loginForm, registerForm, registerUser, confirmar, loginUser, logout, formForgout, forgoutPassword, formchangePassword, changePassword, formForgoutChangePassword, forgoutChangePassword, formChangePassword } = require('../controllers/authController');
-const { verificarSessionLogin, verificarSessionReg, verificarUser } = require('../middleware/verificarUserSession');
+const { formForgout, forgoutPassword, changePassword, formForgoutChangePassword,
+    forgoutChangePassword, formChangePassword } = require('../controllers/authController');
 const {userBlocked, loginForm, registerForm, registerUser, confirmar, loginUser, logout } = require('../controllers/authController');
 const { verificarSessionLogin, verificarSessionReg, verificarUser, verificarSession } = require('../middleware/verificarUserSession');
 const router = express.Router();
@@ -24,8 +24,8 @@ router.get('/confirmar/:token', confirmar);
 router.get('/login', verificarSessionLogin, loginForm);
 router.post('/login',
     [
-        body('email', 'Ingrese un email valido').trim().isEmail().normalizeEmail(),
-        body('password', 'Ingrese de minimo 6 caracteres').trim().isLength({ min: 6 }).escape(),
+    body('email', 'Ingrese un email valido').trim().isEmail().normalizeEmail(),
+    body('password', 'Ingrese de minimo 6 caracteres').trim().isLength({ min: 6 }).escape(),
     ], loginUser);
 router.get('/logout', logout);
 router.get('/forgout', formForgout);

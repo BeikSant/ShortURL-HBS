@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const { nanoid } = require('nanoid');
 const { validationResult } = require('express-validator');
-const { mailOptions, transporter } = require("../utils/mail");
+//const { mailOptions, transporter } = require("../utils/mail");
 const Forgout = require("../models/Forgout");
 
 
@@ -38,12 +38,12 @@ const registerUser = async (req, res) => {
         }
         const tokenConfirm = nanoid();
         const user = new User({ userName, email, password, tokenConfirm });
-        transporter.sendMail(mailOptions(email, tokenConfirm), (error, info) => {
-            if (error) {
-                console.log(error);
-                throw new Error('No se logro enviar el correo');
-            }
-        });
+        // transporter.sendMail(mailOptions(email, tokenConfirm), (error, info) => {
+        //     if (error) {
+        //         console.log(error);
+        //         throw new Error('No se logro enviar el correo');
+        //     }
+        // });
         await user.save();
 
         req.flash('mensajes', [{ msg: "Revisa tu correo electrónico y valida tu cuenta" }]);
@@ -183,6 +183,7 @@ const changePassword = async (req, res) => {
         req.flash('mensajes', [{ msg: error.message }]);
         res.redirect('/auth/changePassword');
     }
+}
 
 const userBlocked = (req, res) => {
     res.render('Blocked');
